@@ -272,6 +272,77 @@ h3 {
   padding: 14px;
 }
 
+.photo-slider {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.photo-slider::before,
+.photo-slider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 72px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.photo-slider::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(255, 253, 253, 0.96), transparent);
+}
+
+.photo-slider::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(255, 247, 248, 0.96), transparent);
+}
+
+.photo-slider-track {
+  display: flex;
+  gap: 18px;
+  width: max-content;
+  animation: slide-gallery 34s linear infinite;
+}
+
+.slider-card {
+  flex: 0 0 clamp(180px, 22vw, 240px);
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(252, 241, 244, 0.88));
+  box-shadow: var(--shadow-soft);
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.slider-card:nth-child(4n + 1) {
+  --tilt: -2deg;
+}
+
+.slider-card:nth-child(4n + 2) {
+  --tilt: 1.8deg;
+}
+
+.slider-card:nth-child(4n + 3) {
+  --tilt: -1deg;
+}
+
+.slider-card:nth-child(4n + 4) {
+  --tilt: 2.2deg;
+}
+
+.slider-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 22px;
+  background: #f8eef1;
+  object-fit: contain;
+  object-position: center;
+}
+
 .detail-row {
   display: grid;
   grid-template-columns: 14px 1fr;
@@ -334,6 +405,10 @@ h3 {
   .card-grid {
     grid-template-columns: 1fr;
   }
+
+  .slider-card {
+    flex-basis: clamp(170px, 36vw, 220px);
+  }
 }
 
 @media (max-width: 640px) {
@@ -363,6 +438,31 @@ h3 {
   .section {
     padding: 34px 0;
   }
+
+  .photo-slider::before,
+  .photo-slider::after {
+    width: 32px;
+  }
+
+  .photo-slider-track {
+    gap: 14px;
+  }
+
+  .slider-card {
+    flex-basis: 180px;
+    padding: 10px;
+    transform: none;
+  }
+}
+
+@keyframes slide-gallery {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 9px));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -378,5 +478,13 @@ h3 {
   .hero-link {
     animation: none;
     transition: none;
+  }
+
+  .photo-slider-track {
+    animation: none;
+  }
+
+  .slider-card {
+    transform: none;
   }
 }
