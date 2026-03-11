@@ -110,7 +110,7 @@ function App() {
           <SectionHeading
             eyebrow="Presence"
             title="The kind of vibe that feels cute, creative, and real"
-            text="Using your README as reference, I leaned into what actually feels like you: sweet energy, creative hobbies, comfort things, and a style that feels soft without trying too hard."
+            text="I leaned into what actually feels like you: sweet energy, creative hobbies, comfort things, and a style that feels soft without trying too hard."
           />
 
           <div className="card-grid">
@@ -145,7 +145,7 @@ function App() {
           <SectionHeading
             eyebrow="Favorites"
             title="The things that make the page feel more like you"
-            text="Pulled from your README, because details like favorite flowers, hobbies, and foods make this feel more personal."
+            text="Details like favorite flowers, hobbies, and foods make this feel more personal."
           />
 
           <div className="favorites-layout">
@@ -192,7 +192,7 @@ function App() {
           <SectionHeading
             eyebrow="Comfort Menu"
             title="Also, your food list is elite"
-            text="A page based on your README would be incomplete without mentioning the snacks and comfort food lineup."
+            text="A page like this would be incomplete without mentioning the snacks and comfort food lineup."
           />
 
           <div className="tag-list food-tags">
@@ -208,7 +208,7 @@ function App() {
           <SectionHeading
             eyebrow="Why I made this"
             title="Because your own little intro already had a cute vibe to build from"
-            text="So I used your README as the reference point and turned it into something softer and more personal. Still simple, still light, just a bit more you."
+            text="So I turned that into something softer and more personal. Still simple, still light, just a bit more you."
           />
         </section>
       </main>
