@@ -1,23 +1,23 @@
 :root {
-  --bg-top: #fffafc;
-  --bg-bottom: #fff7f8;
-  --text-main: #4f4050;
-  --text-soft: #705b67;
-  --text-strong: #3d313e;
-  --text-accent: #8f6672;
-  --line-soft: rgba(215, 186, 194, 0.45);
-  --pill-line: rgba(205, 164, 177, 0.35);
+  --bg-top: #f5f9ff;
+  --bg-bottom: #eef5ff;
+  --text-main: #3e4762;
+  --text-soft: #627091;
+  --text-strong: #2b3550;
+  --text-accent: #5f7fd6;
+  --line-soft: rgba(169, 191, 232, 0.42);
+  --pill-line: rgba(145, 171, 224, 0.38);
   --card-bg: rgba(255, 255, 255, 0.68);
-  --card-soft: rgba(252, 240, 243, 0.88);
-  --button-bg: #f4d7df;
-  --button-bg-hover: #f1cfd8;
-  --shadow-soft: 0 18px 50px rgba(217, 194, 203, 0.14);
-  --shadow-button: 0 12px 30px rgba(221, 170, 187, 0.2);
+  --card-soft: rgba(239, 245, 255, 0.92);
+  --button-bg: #dce9ff;
+  --button-bg-hover: #cfe1ff;
+  --shadow-soft: 0 18px 50px rgba(157, 181, 225, 0.16);
+  --shadow-button: 0 12px 30px rgba(132, 163, 224, 0.22);
   font-family: "Trebuchet MS", "Gill Sans", sans-serif;
   color: var(--text-main);
   background:
-    radial-gradient(circle at top left, rgba(255, 219, 229, 0.85), transparent 30%),
-    radial-gradient(circle at top right, rgba(255, 240, 244, 0.95), transparent 28%),
+    radial-gradient(circle at top left, rgba(183, 214, 255, 0.85), transparent 30%),
+    radial-gradient(circle at top right, rgba(225, 238, 255, 0.95), transparent 28%),
     linear-gradient(180deg, var(--bg-top) 0%, #fffdfd 45%, var(--bg-bottom) 100%);
   line-height: 1.6;
   font-weight: 400;
@@ -81,13 +81,13 @@ h3 {
 .page-glow-left {
   top: 80px;
   left: -80px;
-  background: rgba(255, 210, 223, 0.8);
+  background: rgba(138, 174, 239, 0.78);
 }
 
 .page-glow-right {
   top: 420px;
   right: -90px;
-  background: rgba(255, 235, 240, 0.9);
+  background: rgba(212, 232, 255, 0.92);
 }
 
 .hero,
@@ -125,7 +125,7 @@ h3 {
   border: 1px solid var(--pill-line);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.55);
-  color: #a06f7c;
+  color: #6f86c4;
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -166,7 +166,7 @@ h3 {
   padding: 13px 22px;
   border-radius: 999px;
   background: var(--button-bg);
-  color: #5f4650;
+  color: #31446f;
   box-shadow: var(--shadow-button);
   transition:
     transform 180ms ease,
@@ -177,7 +177,7 @@ h3 {
 .hero-link:hover {
   transform: translateY(-2px);
   background: var(--button-bg-hover);
-  box-shadow: 0 16px 32px rgba(221, 170, 187, 0.28);
+  box-shadow: 0 16px 32px rgba(132, 163, 224, 0.28);
 }
 
 .hero-card,
@@ -197,7 +197,7 @@ h3 {
 
 .hero-card-label {
   margin-bottom: 16px;
-  color: #9a7080;
+  color: #6981be;
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -215,7 +215,7 @@ h3 {
   padding: 14px 16px;
   border-radius: 18px;
   background: var(--card-soft);
-  color: #5f4b55;
+  color: #47577c;
 }
 
 .section {
@@ -236,7 +236,7 @@ h3 {
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1.05;
   letter-spacing: -0.03em;
-  color: #443741;
+  color: #31405e;
 }
 
 .section-heading p:last-child {
@@ -265,7 +265,7 @@ h3 {
 .info-card h3 {
   margin-bottom: 12px;
   font-size: 1.15rem;
-  color: #4b3b46;
+  color: #334364;
 }
 
 .details-panel {
@@ -291,12 +291,12 @@ h3 {
 
 .photo-slider::before {
   left: 0;
-  background: linear-gradient(90deg, rgba(255, 253, 253, 0.96), transparent);
+  background: linear-gradient(90deg, rgba(245, 249, 255, 0.97), transparent);
 }
 
 .photo-slider::after {
   right: 0;
-  background: linear-gradient(270deg, rgba(255, 247, 248, 0.96), transparent);
+  background: linear-gradient(270deg, rgba(238, 245, 255, 0.97), transparent);
 }
 
 .photo-slider-track {
@@ -312,7 +312,7 @@ h3 {
   padding: 12px;
   border: 1px solid var(--line-soft);
   border-radius: 30px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(252, 241, 244, 0.88));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(236, 244, 255, 0.92));
   box-shadow: var(--shadow-soft);
   transform: rotate(var(--tilt, 0deg));
 }
@@ -338,9 +338,86 @@ h3 {
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 22px;
-  background: #f8eef1;
+  background: #eef4ff;
   object-fit: contain;
   object-position: center;
+}
+
+.favorites-layout {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 18px;
+}
+
+.favorite-panel {
+  padding: 28px;
+  border: 1px solid var(--line-soft);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: var(--shadow-soft);
+}
+
+.favorite-label {
+  margin-bottom: 12px;
+  color: #6e86c3;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.favorite-panel h3 {
+  margin-bottom: 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  color: #2f4267;
+}
+
+.favorite-panel p {
+  color: var(--text-soft);
+}
+
+.lily-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(162, 192, 255, 0.38), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(233, 242, 255, 0.9));
+}
+
+.lily-panel::after {
+  content: 'blue lily';
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  color: rgba(95, 127, 214, 0.18);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid rgba(156, 182, 232, 0.4);
+  border-radius: 999px;
+  background: rgba(235, 243, 255, 0.92);
+  color: #486199;
+  box-shadow: 0 10px 24px rgba(157, 181, 225, 0.12);
+}
+
+.food-tags {
+  gap: 10px;
+}
+
+.food-chip {
+  background: rgba(255, 255, 255, 0.88);
 }
 
 .detail-row {
@@ -361,7 +438,7 @@ h3 {
   height: 10px;
   margin-top: 8px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #f0becd 0%, #df9fb4 100%);
+  background: linear-gradient(180deg, #b3cfff 0%, #6f95e8 100%);
 }
 
 .message-section {
@@ -403,6 +480,10 @@ h3 {
   }
 
   .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .favorites-layout {
     grid-template-columns: 1fr;
   }
 
