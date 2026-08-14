@@ -719,6 +719,89 @@ body {
   pointer-events: none;
 }
 
+/* Sticky Scroll Cards — pinned photo reel */
+.stack-cards-section {
+  padding-top: 20px;
+}
+
+.stack-cards-root {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 26vh;
+  padding-bottom: 55vh;
+}
+
+.stack-cards-hint {
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 5;
+}
+
+.stack-cards-hint p {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: var(--blush-rose);
+  font-weight: 600;
+}
+
+.stack-cards-hint-line {
+  height: 48px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--line-strong), transparent);
+}
+
+.stack-card-sticky {
+  position: sticky;
+  top: 0;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.stack-card-figure {
+  position: relative;
+  margin: 0;
+  transform-origin: top center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--bg-polaroid);
+  box-shadow: var(--shadow-polaroid);
+  border: 1px solid rgba(220, 225, 235, 0.7);
+}
+
+.stack-card-photo-wrap {
+  padding: 12px 12px 0;
+}
+
+.stack-card-photo-wrap img {
+  display: block;
+  width: min(78vw, 460px);
+  height: clamp(210px, 32vw, 290px);
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.stack-card-caption {
+  display: grid;
+  height: 44px;
+  place-items: center;
+  padding: 0 16px;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: var(--ink-secondary);
+  text-align: center;
+}
+
 /* Interactive Love Letter / Envelope Section */
 .letter-section {
   max-width: 800px;

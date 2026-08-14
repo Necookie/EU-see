@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import photosData from './photosData.json'
+import StickyScrollCards from './components/StickyScrollCards'
 
 const milestoneMoments = [
   {
@@ -92,6 +93,13 @@ const albumsMeta = [
   { key: 'candid', label: 'Candid', sub: '', emoji: '📸' },
   { key: 'featured', label: 'Favorites', sub: '', emoji: '🌟' },
 ]
+
+const favoriteTitles = ['My Favorite', 'So Pretty', 'Obsessed', "Can't Even, Bebi", 'Love This One']
+
+const favoriteReelCards = photosData
+  .filter((p) => p.category === 'featured')
+  .slice(0, 5)
+  .map((p, i) => ({ src: p.src, title: favoriteTitles[i % favoriteTitles.length] }))
 
 export default function App() {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -311,6 +319,7 @@ export default function App() {
             <a href="#gallery" className="nav-link">Scrapbook</a>
             <a href="#letter" className="nav-link">Letter</a>
             <a href="#about" className="nav-link">About You</a>
+            <a href="#favorites" className="nav-link">Favorites</a>
             <a href="#food" className="nav-link">Comfort Food</a>
           </nav>
           <button className="celebrate-btn" onClick={triggerConfetti}>
@@ -620,6 +629,16 @@ export default function App() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* FAVORITE FRAMES — sticky stacking scroll reel */}
+        <section className="section stack-cards-section" id="favorites">
+          <div className="section-head">
+            <span className="section-tag">A Little Reel</span>
+            <h2 className="section-title">Favorite Frames</h2>
+            <p className="section-sub">Scroll through a few of my favorite shots of you.</p>
+          </div>
+          <StickyScrollCards cards={favoriteReelCards} hint="scroll to see my favorites" />
         </section>
 
         {/* COMFORT FOOD SECTION */}
