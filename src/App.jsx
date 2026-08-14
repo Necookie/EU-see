@@ -103,8 +103,7 @@ export default function App() {
   const [foodReactions, setFoodReactions] = useState({})
   const [heartBursts, setHeartBursts] = useState([])
   const [sealJustOpened, setSealJustOpened] = useState(false)
-  const audioContextRef = useRef(null)
-  const oscillatorRef = useRef(null)
+  const songRef = useRef(null)
 
   // Live Timer: Exact live counting from May 15, 2026 00:00:00
   const [liveTimer, setLiveTimer] = useState({
@@ -195,56 +194,29 @@ export default function App() {
     }, 1100)
   }
 
-  // Music toggle using gentle Web Audio sine chords
+  // Music toggle — plays our song
   const toggleMusic = () => {
+    if (!songRef.current) {
+      songRef.current = new Audio('/audio/our-song.mp3')
+      songRef.current.loop = true
+      songRef.current.volume = 0.55
+    }
+
     if (isPlayingMusic) {
-      if (oscillatorRef.current) {
-        try {
-          oscillatorRef.current.stop()
-        } catch (e) {}
-      }
+      songRef.current.pause()
       setIsPlayingMusic(false)
     } else {
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext
-        if (!audioContextRef.current) {
-          audioContextRef.current = new AudioContext()
-        }
-        const ctx = audioContextRef.current
-        if (ctx.state === 'suspended') {
-          ctx.resume()
-        }
-
-        const notes = [261.63, 329.63, 392.0, 523.25, 440.0, 349.23]
-        let noteIdx = 0
-
-        const playArp = () => {
-          if (!isPlayingMusic && oscillatorRef.current === null) return
-          const osc = ctx.createOscillator()
-          const gain = ctx.createGain()
-          osc.type = 'sine'
-          osc.frequency.setValueAtTime(notes[noteIdx % notes.length], ctx.currentTime)
-          noteIdx++
-
-          gain.gain.setValueAtTime(0.001, ctx.currentTime)
-          gain.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime + 0.1)
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.5)
-
-          osc.connect(gain)
-          gain.connect(ctx.destination)
-          osc.start()
-          osc.stop(ctx.currentTime + 1.6)
-        }
-
-        playArp()
-        const intervalId = setInterval(playArp, 1300)
-        oscillatorRef.current = { stop: () => clearInterval(intervalId) }
-        setIsPlayingMusic(true)
-      } catch (err) {
-        setIsPlayingMusic(true)
-      }
+      songRef.current.play().catch(() => {})
+      setIsPlayingMusic(true)
     }
   }
+
+  // Pause the song if the tab unmounts mid-play
+  useEffect(() => {
+    return () => {
+      if (songRef.current) songRef.current.pause()
+    }
+  }, [])
 
   // Lightbox keyboard navigation
   useEffect(() => {
@@ -780,15 +752,15 @@ export default function App() {
       <div
         className="vinyl-widget"
         onClick={toggleMusic}
-        title="Toggle soft ambient melody"
+        title="Toggle our song"
       >
         <div className={`vinyl-disc ${isPlayingMusic ? 'spinning' : ''}`}>
           <div className="vinyl-center-dot" />
         </div>
         <div className="vinyl-text">
-          <span className="vinyl-title">Our Melodies 🎵</span>
+          <span className="vinyl-title">Our Song 🎵</span>
           <span className="vinyl-status">
-            {isPlayingMusic ? 'Playing soft chords ♬' : 'Tap to play music'}
+            {isPlayingMusic ? 'Now playing ♬' : 'Tap to play music'}
           </span>
         </div>
       </div>
