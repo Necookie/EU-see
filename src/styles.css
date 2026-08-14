@@ -171,6 +171,25 @@ body {
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(84, 116, 196, 0.3);
   transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.celebrate-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  animation: shimmerSweep 3.2s ease-in-out infinite;
+}
+
+@keyframes shimmerSweep {
+  0% { left: -60%; }
+  50%, 100% { left: 130%; }
 }
 
 .celebrate-btn:hover {
@@ -574,6 +593,52 @@ body {
   box-shadow: 0 6px 18px rgba(84, 116, 196, 0.35);
 }
 
+/* Album groupings — gives the gallery an actual "photo album" feel */
+.album-block {
+  margin-bottom: 52px;
+}
+
+.album-block:last-child {
+  margin-bottom: 0;
+}
+
+.album-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 10px 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--line-strong);
+}
+
+.album-emoji {
+  font-size: 1.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: var(--blue-lily-soft);
+  border-radius: 16px;
+  transform: rotate(-4deg);
+  box-shadow: var(--shadow-sm);
+}
+
+.album-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--ink-primary);
+  line-height: 1.2;
+}
+
+.album-count {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -589,7 +654,17 @@ body {
   border: 1px solid rgba(220, 225, 235, 0.7);
   position: relative;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+  animation: cardRiseIn 0.45s ease-out both;
+}
+
+@keyframes cardRiseIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .gallery-card:hover {
@@ -684,11 +759,33 @@ body {
   box-shadow: 0 8px 22px rgba(184, 51, 74, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.4);
   transition: all 0.3s ease;
   user-select: none;
+  animation: sealBreathe 4s ease-in-out infinite;
+}
+
+@keyframes sealBreathe {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.03) rotate(-2deg); }
 }
 
 .wax-seal:hover {
   transform: scale(1.08) rotate(5deg);
   box-shadow: 0 12px 28px rgba(184, 51, 74, 0.55);
+  animation-play-state: paused;
+}
+
+.wax-seal.is-open {
+  animation: none;
+}
+
+.wax-seal.just-opened {
+  animation: sealPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes sealPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25) rotate(-8deg); }
+  70% { transform: scale(0.94) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 .wax-seal-initials {
@@ -835,6 +932,41 @@ body {
   background: var(--blue-lily-soft);
   color: var(--blue-lily-deep);
   border-color: var(--blue-lily);
+}
+
+.food-chip.is-selected {
+  animation: chipWobble 0.45s ease;
+}
+
+@keyframes chipWobble {
+  0% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.15) rotate(-6deg); }
+  60% { transform: scale(1.08) rotate(5deg); }
+  100% { transform: scale(1.05) rotate(0deg); }
+}
+
+/* Little hearts that pop out when you tap "Love" on a photo */
+.mini-heart-pop {
+  position: absolute;
+  font-size: 1.1rem;
+  transform: translate(-50%, -50%);
+  animation: miniHeartFloat 1s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes miniHeartFloat {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--drift)), -140px) scale(0.9);
+  }
 }
 
 /* Lightbox Modal */
@@ -1130,5 +1262,15 @@ body {
 
   .lightbox-next {
     right: 0;
+  }
+
+  .album-header {
+    margin: 0 2px 18px;
+  }
+
+  .album-emoji {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
   }
 }

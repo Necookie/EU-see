@@ -6,8 +6,7 @@ const milestoneMoments = [
     date: 'May 15, 2026',
     badge: 'Our Anniversary 💕',
     title: 'The Day It All Began',
-    description:
-      'The start of our relationship and the day we officially became us.',
+    description: 'The start of us — the day we officially became a thing.',
     photo: '/photos/bebi-journey-03.jpg',
     caption: 'May 15, 2026 · Where our story started',
   },
@@ -16,7 +15,7 @@ const milestoneMoments = [
     badge: 'Makati Date 🏙️',
     title: 'Our Day in Makati',
     description:
-      'Spending the day together in Makati—walking around, good food, cafe stops, and taking photos together during golden hour.',
+      'Walking around Makati together — good food, cafe stops, and photos at golden hour. Simple, but one of my favorite days.',
     photo: '/photos/makati-golden-01.jpg',
     caption: 'July 25, 2026 · Makati golden hour with you',
   },
@@ -24,8 +23,7 @@ const milestoneMoments = [
     date: 'August 15, 2026',
     badge: '3rd Monthsary 🥂',
     title: 'Three Months of Us',
-    description:
-      'Celebrating our 3rd monthsary! Three months down and excited for more memories to come.',
+    description: '3 months down, bebi. Excited for a lot more to come.',
     photo: '/photos/makati-memory-10.jpg',
     caption: 'August 15, 2026 · Happy 3rd Monthsary!',
   },
@@ -35,32 +33,32 @@ const personalityHighlights = [
   {
     icon: '🌸',
     title: 'Blue Lily Energy',
-    text: 'Calm, soft, and naturally striking without being loud. It matches your vibe completely.',
+    text: 'Calm and soft, but still stands out — kinda just like you.',
   },
   {
     icon: '🎨',
     title: 'Cute & Creative',
-    text: 'Your artisan crafts, aesthetic eye, and natural creativity that makes small things thoughtful and fun.',
+    text: 'The little crafts, the aesthetic eye, the way you make even small things feel thought out.',
   },
   {
     icon: '📚',
     title: 'Manga & Late Night Movies',
-    text: 'Enjoying good stories, cozy late nights, and just sharing whatever we are into.',
+    text: 'Good stories and late night movies, just vibing with whatever we’re into that day.',
   },
   {
     icon: '✨',
     title: 'Easy to Be Around',
-    text: 'Warm, cozy, and genuine company. Nothing forced—just sweet and comfortable.',
+    text: 'No pressure, no forcing it — just easy and comfortable, every time.',
   },
   {
     icon: '🍕',
     title: 'Elite Food Taste',
-    text: 'From Latiao and Buldak to sushi, fries, and pizza—our food cravings always hit the spot.',
+    text: 'Latiao, Buldak, sushi, fries, pizza — your food picks never miss.',
   },
   {
     icon: '💙',
     title: 'Sweet in the Details',
-    text: 'The little things stand out with you—your hobbies, your style, and your gentle charm.',
+    text: 'It’s always the small stuff with you — your hobbies, your style, just you being you.',
   },
 ]
 
@@ -75,6 +73,24 @@ const comfortFoods = [
   { name: 'Pasta', emoji: '🍝' },
   { name: 'Sisig', emoji: '🍳' },
   { name: 'Chicken Burgers', emoji: '🍔' },
+  { name: 'Kimchi', emoji: '🥬' },
+  { name: 'Chicken Poppers', emoji: '🍗' },
+]
+
+const categoryLabels = {
+  makati: 'Makati Date',
+  journey: 'Our Journey',
+  sweet: 'Sweet Moment',
+  candid: 'Candid Moment',
+  featured: 'A Favorite',
+}
+
+const albumsMeta = [
+  { key: 'makati', label: 'Makati Date', sub: 'July 25 · our day out', emoji: '🏙️' },
+  { key: 'journey', label: 'Our Journey', sub: 'how we got here', emoji: '🌸' },
+  { key: 'sweet', label: 'Sweet Moments', sub: '', emoji: '💕' },
+  { key: 'candid', label: 'Candid', sub: '', emoji: '📸' },
+  { key: 'featured', label: 'Favorites', sub: '', emoji: '🌟' },
 ]
 
 export default function App() {
@@ -85,6 +101,8 @@ export default function App() {
   const [isPlayingMusic, setIsPlayingMusic] = useState(false)
   const [confettiBurst, setConfettiBurst] = useState([])
   const [foodReactions, setFoodReactions] = useState({})
+  const [heartBursts, setHeartBursts] = useState([])
+  const [sealJustOpened, setSealJustOpened] = useState(false)
   const audioContextRef = useRef(null)
   const oscillatorRef = useRef(null)
 
@@ -119,16 +137,16 @@ export default function App() {
     return () => clearInterval(interval)
   }, [])
 
-  // Filtered photos
-  const filteredPhotos = photosData.filter((photo) => {
-    if (activeFilter === 'all') return true
-    if (activeFilter === 'makati') return photo.category === 'makati'
-    if (activeFilter === 'journey') return photo.category === 'journey'
-    if (activeFilter === 'sweet') return photo.category === 'sweet'
-    if (activeFilter === 'candid') return photo.category === 'candid'
-    if (activeFilter === 'featured') return photo.category === 'featured'
-    return true
-  })
+  // Albums shown depend on the active filter — grouped like a real photo album
+  const albumsToShow =
+    activeFilter === 'all'
+      ? albumsMeta
+      : albumsMeta.filter((a) => a.key === activeFilter)
+
+  // Flattened list, grouped album by album, used for the lightbox / keyboard nav
+  const filteredPhotos = albumsToShow.flatMap((album) =>
+    photosData.filter((photo) => photo.category === album.key)
+  )
 
   // Floating petals
   const petals = Array.from({ length: 16 }).map((_, i) => ({
@@ -158,6 +176,23 @@ export default function App() {
       ...prev,
       [src]: (prev[src] || 0) + 1,
     }))
+
+    // Little hearts pop out from wherever the button was tapped
+    const rect = e.currentTarget.getBoundingClientRect()
+    const originX = rect.left + rect.width / 2
+    const originY = rect.top
+    const burstId = Date.now()
+    const newHearts = Array.from({ length: 6 }).map((_, i) => ({
+      id: `${burstId}-${i}`,
+      x: originX + (Math.random() * 60 - 30),
+      y: originY,
+      drift: Math.random() * 40 - 20,
+      delay: `${i * 0.05}s`,
+    }))
+    setHeartBursts((prev) => [...prev, ...newHearts])
+    setTimeout(() => {
+      setHeartBursts((prev) => prev.filter((h) => !newHearts.some((n) => n.id === h.id)))
+    }, 1100)
   }
 
   // Music toggle using gentle Web Audio sine chords
@@ -272,11 +307,31 @@ export default function App() {
         </div>
       )}
 
+      {/* Little Heart Burst (from Love reactions) */}
+      {heartBursts.length > 0 && (
+        <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 1000 }}>
+          {heartBursts.map((h) => (
+            <span
+              key={h.id}
+              className="mini-heart-pop"
+              style={{
+                left: `${h.x}px`,
+                top: `${h.y}px`,
+                animationDelay: h.delay,
+                '--drift': `${h.drift}px`,
+              }}
+            >
+              💙
+            </span>
+          ))}
+        </div>
+      )}
+
       <div className="page-container">
         {/* Navigation Bar */}
         <header className="top-nav">
           <div className="nav-brand">
-            🌸 Eulyn & Dheyn <span>3rd Monthsary</span>
+            🌸 bebi & hubby <span>3rd Monthsary</span>
           </div>
           <nav className="nav-links">
             <a href="#timer" className="nav-link">Live Timer</a>
@@ -299,10 +354,10 @@ export default function App() {
             </div>
             <h1 className="hero-title">
               Happy <span className="highlight">3rd Monthsary</span>,
-              <span className="hand-subtitle">Eulyn</span>
+              <span className="hand-subtitle">bebi</span>
             </h1>
             <p className="hero-description">
-              A little digital scrapbook for you, celebrating 3 months together. From our anniversary on May 15 to our Makati date on July 25 and all the sweet moments along the way.
+              A little scrapbook made just for you — from our first day on May 15, to our Makati date on July 25, and everything sweet in between.
             </p>
 
             {/* Live Ticking Anniversary Counter */}
@@ -421,19 +476,19 @@ export default function App() {
             <span className="section-tag">Photo Collection</span>
             <h2 className="section-title">Our Captured Frames</h2>
             <p className="section-sub">
-              Photos from our Makati date, milestones, and favorite candid moments. Click any frame to view in full.
+              Just a bunch of our photos, sorted into little albums. Click any frame to view in full.
             </p>
           </div>
 
           {/* Category Filter Tabs */}
           <div className="filter-tabs">
             {[
-              { key: 'all', label: `✨ All Photos (${photosData.length})` },
+              { key: 'all', label: `✨ All Albums (${photosData.length})` },
               { key: 'makati', label: '🏙️ Makati Date (July 25)' },
-              { key: 'journey', label: '🌸 Milestones' },
+              { key: 'journey', label: '🌸 Our Journey' },
               { key: 'sweet', label: '💕 Sweet Moments' },
               { key: 'candid', label: '📸 Candid' },
-              { key: 'featured', label: '🌟 Featured' },
+              { key: 'featured', label: '🌟 Favorites' },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -445,42 +500,68 @@ export default function App() {
             ))}
           </div>
 
-          {/* Gallery Grid */}
-          <div className="gallery-grid">
-            {filteredPhotos.map((photo, index) => {
-              const tilt = (index % 5) - 2
-              const likeCount = likes[photo.src] || 0
-              return (
-                <div
-                  key={`${photo.src}-${index}`}
-                  className="gallery-card"
-                  style={{ transform: `rotate(${tilt}deg)` }}
-                  onClick={() => setSelectedPhotoIndex(index)}
-                >
-                  <div className="washi-tape" />
-                  <span className="gallery-category-badge">{photo.category}</span>
-                  <div className="gallery-photo-wrapper">
-                    <img src={photo.src} alt={photo.caption} loading="lazy" />
-                  </div>
-                  <p className="gallery-caption">{photo.caption}</p>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      marginTop: '8px',
-                    }}
-                  >
-                    <button
-                      className="heart-reaction-btn"
-                      onClick={(e) => handleLike(photo.src, e)}
-                    >
-                      ❤️ {likeCount > 0 ? likeCount : 'Love'}
-                    </button>
+          {/* Albums */}
+          {albumsToShow.map((album) => {
+            const albumPhotos = photosData.filter((p) => p.category === album.key)
+            if (albumPhotos.length === 0) return null
+            return (
+              <div className="album-block" key={album.key}>
+                <div className="album-header">
+                  <span className="album-emoji">{album.emoji}</span>
+                  <div>
+                    <h3 className="album-title">{album.label}</h3>
+                    <span className="album-count">
+                      {albumPhotos.length} photo{albumPhotos.length !== 1 ? 's' : ''}
+                      {album.sub ? ` · ${album.sub}` : ''}
+                    </span>
                   </div>
                 </div>
-              )
-            })}
-          </div>
+
+                <div className="gallery-grid">
+                  {albumPhotos.map((photo, i) => {
+                    const globalIndex = filteredPhotos.indexOf(photo)
+                    const tilt = (i % 5) - 2
+                    const likeCount = likes[photo.src] || 0
+                    return (
+                      <div
+                        key={photo.src}
+                        className="gallery-card"
+                        style={{
+                          transform: `rotate(${tilt}deg)`,
+                          animationDelay: `${(i % 8) * 0.06}s`,
+                        }}
+                        onClick={() => setSelectedPhotoIndex(globalIndex)}
+                      >
+                        <div className="washi-tape" />
+                        <div className="gallery-photo-wrapper">
+                          <img
+                            src={photo.src}
+                            alt={photo.caption || categoryLabels[photo.category]}
+                            loading="lazy"
+                          />
+                        </div>
+                        {photo.caption && <p className="gallery-caption">{photo.caption}</p>}
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginTop: '8px',
+                          }}
+                        >
+                          <button
+                            className="heart-reaction-btn"
+                            onClick={(e) => handleLike(photo.src, e)}
+                          >
+                            ❤️ {likeCount > 0 ? likeCount : 'Love'}
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
         </section>
 
         {/* SEALED LOVE LETTER SECTION */}
@@ -496,11 +577,17 @@ export default function App() {
           <div className="envelope-wrapper">
             <div className="envelope-seal-bar">
               <div
-                className="wax-seal"
-                onClick={() => setEnvelopeOpen(!envelopeOpen)}
+                className={`wax-seal ${envelopeOpen ? 'is-open' : ''} ${sealJustOpened ? 'just-opened' : ''}`}
+                onClick={() => {
+                  setEnvelopeOpen(!envelopeOpen)
+                  if (!envelopeOpen) {
+                    setSealJustOpened(true)
+                    setTimeout(() => setSealJustOpened(false), 500)
+                  }
+                }}
                 title="Click to open / close letter"
               >
-                <span className="wax-seal-initials">E & D</span>
+                <span className="wax-seal-initials">B & H</span>
                 <span className="wax-seal-sub">{envelopeOpen ? 'OPEN' : 'SEALED'}</span>
               </div>
               <p className="envelope-hint">
@@ -512,24 +599,30 @@ export default function App() {
 
             {envelopeOpen && (
               <div className="letter-content">
-                <h3 className="letter-heading">Dearest Eulyn,</h3>
+                <h3 className="letter-heading">Dearest bebi,</h3>
                 <div className="letter-body">
                   <p>
-                    Happy 3rd Monthsary! It is crazy to think three months have already passed since May 15, 2026.
+                    Happy 3rd monthsary! 🥺❤️ Grabe, three months na tayo since May 15. Parang ang bilis ng time, pero at the same time, ang dami na rin nating memories together.
                   </p>
                   <p>
-                    I appreciate the person you are—creative, naturally sweet, thoughtful, and easy to be around. Whether we are talking about manga, movies, food cravings, or random everyday things, spending time with you is always my favorite part of the day.
+                    I just really, really love you. Sobrang love kita, bebi. You're genuinely the cutest person I know, and hindi ko alam kung paano mo nagagawa pero lalo ka lang nagiging cute sa paningin ko habang mas nakikilala kita. I love everything about you, yung sweetness mo, yung little quirks mo, yung way mo magsalita, and even yung mga random things about you na ikaw lang talaga.
                   </p>
                   <p>
-                    Our Makati date on July 25 was really special to me. Walking around, trying good food, and having you right beside me made for such a memorable day.
+                    Honestly, hindi ko na kailangan ng special reason para mahalin ka. I just love you because you're you. Kahit simpleng usap lang tayo or magkasama lang tayo doing nothing, I'm already happy kasi ikaw yung kasama ko.
                   </p>
                   <p>
-                    Thank you for three wonderful months, Eulyn. Here is to celebrating today and looking forward to many more months and dates ahead.
+                    Thank you for being my bebi, my favorite person, and someone who makes my days so much better. I'm really, really grateful na dumating ka sa life ko.
+                  </p>
+                  <p>
+                    I love you so much, bebi. Sobrang sobra. ❤️ I hope you know how much you mean to me, kahit minsan hindi ko maexpress nang maayos.
+                  </p>
+                  <p>
+                    Happy 3rd monthsary, my love. Here's to us and sa marami pang months, dates, memories, and moments together. I love youuuuu so much, bebi. 🥺❤️
                   </p>
                 </div>
                 <div className="letter-signature">
                   <p className="letter-sign-text">With all my love,</p>
-                  <p className="letter-sign-text">Dheyn 💙</p>
+                  <p className="letter-sign-text">hubby 💙</p>
                 </div>
               </div>
             )}
@@ -573,7 +666,7 @@ export default function App() {
               return (
                 <div
                   key={food.name}
-                  className="food-chip"
+                  className={`food-chip ${isSelected ? 'is-selected' : ''}`}
                   style={{
                     backgroundColor: isSelected ? 'var(--blue-lily)' : undefined,
                     color: isSelected ? '#ffffff' : undefined,
@@ -597,9 +690,9 @@ export default function App() {
 
         {/* FOOTER */}
         <footer className="footer">
-          <p className="footer-hand">Happy 3rd Monthsary, Eulyn 💙</p>
+          <p className="footer-hand">Happy 3rd Monthsary, bebi 💙</p>
           <p className="footer-text">
-            May 15, 2026 · Handcrafted with care, memories, and code.
+            May 15, 2026 · made with love, memories, and a little too much css.
           </p>
         </footer>
       </div>
@@ -648,12 +741,17 @@ export default function App() {
             </button>
 
             <div className="lightbox-image-wrap">
-              <img src={selectedPhoto.src} alt={selectedPhoto.caption} />
+              <img
+                src={selectedPhoto.src}
+                alt={selectedPhoto.caption || categoryLabels[selectedPhoto.category]}
+              />
             </div>
 
             <div className="lightbox-info">
               <div>
-                <p className="lightbox-caption">{selectedPhoto.caption}</p>
+                <p className="lightbox-caption">
+                  {selectedPhoto.caption || categoryLabels[selectedPhoto.category]}
+                </p>
                 <span
                   style={{
                     fontSize: '0.8rem',
