@@ -107,9 +107,14 @@ body {
 
 /* Top Navigation / Status bar */
 .top-nav {
+  position: relative;
+  /* Own stacking context so the mobile dropdown always paints above page
+     content below it (hero text etc.), regardless of their own z-index. */
+  z-index: 20;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 14px 24px;
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(16px);
@@ -122,32 +127,36 @@ body {
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
   font-family: var(--font-serif);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   color: var(--blue-lily-deep);
+  white-space: nowrap;
 }
 
 .nav-brand span {
   font-family: var(--font-hand);
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   color: var(--blush-rose);
   margin-left: 2px;
 }
 
 .nav-links {
   display: flex;
-  gap: 18px;
+  gap: 6px;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .nav-link {
   color: var(--ink-secondary);
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   font-weight: 500;
   text-decoration: none;
-  padding: 6px 12px;
+  white-space: nowrap;
+  padding: 6px 10px;
   border-radius: 20px;
   transition: all 0.2s ease;
 }
@@ -155,6 +164,87 @@ body {
 .nav-link:hover {
   color: var(--blue-lily);
   background: var(--blue-lily-soft);
+}
+
+/* Hamburger toggle — hidden on wide screens, shown once links no longer fit inline */
+.nav-hamburger {
+  display: none;
+  flex-shrink: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  background: var(--blue-lily-soft);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.nav-hamburger:hover {
+  background: var(--line-strong);
+}
+
+.nav-hamburger span {
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--blue-lily-deep);
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.nav-hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Below this width, the inline links no longer comfortably fit the pill —
+   collapse them into a dropdown opened by the hamburger instead. */
+@media (max-width: 1240px) {
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    background: #ffffff;
+    border: 1px solid var(--line-subtle);
+    border-radius: 22px;
+    padding: 12px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+    z-index: 50;
+  }
+
+  .nav-links.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .nav-link {
+    text-align: center;
+    padding: 11px 14px;
+    font-size: 0.95rem;
+  }
 }
 
 .celebrate-btn {
@@ -1324,11 +1414,26 @@ body {
   }
 
   .top-nav {
-    padding: 10px 16px;
+    padding: 10px 14px;
   }
 
-  .nav-links {
-    display: none;
+  .nav-brand {
+    font-size: 0.95rem;
+  }
+
+  .nav-brand span {
+    font-size: 1.2rem;
+  }
+
+  .celebrate-btn {
+    padding: 7px 12px;
+    font-size: 0.78rem;
+  }
+
+  .nav-hamburger {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
   }
 
   .counter-box {
@@ -1355,5 +1460,33 @@ body {
     width: 44px;
     height: 44px;
     font-size: 1.5rem;
+  }
+}
+
+/* Very narrow phones (e.g. iPhone SE) — tighten the nav bar further so the
+   Celebrate button never clips past the pill edge. */
+@media (max-width: 380px) {
+  .top-nav {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .nav-brand {
+    font-size: 0.82rem;
+    gap: 4px;
+  }
+
+  .nav-brand span {
+    font-size: 1rem;
+  }
+
+  .celebrate-btn {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+  }
+
+  .nav-hamburger {
+    width: 30px;
+    height: 30px;
   }
 }

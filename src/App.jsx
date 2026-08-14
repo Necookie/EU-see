@@ -111,6 +111,7 @@ export default function App() {
   const [foodReactions, setFoodReactions] = useState({})
   const [heartBursts, setHeartBursts] = useState([])
   const [sealJustOpened, setSealJustOpened] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const songRef = useRef(null)
 
   // Live Timer: Exact live counting from May 15, 2026 00:00:00
@@ -313,15 +314,28 @@ export default function App() {
           <div className="nav-brand">
             🌸 bebi & hubby <span>3rd Monthsary</span>
           </div>
-          <nav className="nav-links">
-            <a href="#timer" className="nav-link">Live Timer</a>
-            <a href="#milestones" className="nav-link">Milestones</a>
-            <a href="#gallery" className="nav-link">Scrapbook</a>
-            <a href="#letter" className="nav-link">Letter</a>
-            <a href="#about" className="nav-link">About You</a>
-            <a href="#favorites" className="nav-link">Favorites</a>
-            <a href="#food" className="nav-link">Comfort Food</a>
+
+          <button
+            className={`nav-hamburger ${mobileNavOpen ? 'is-open' : ''}`}
+            onClick={() => setMobileNavOpen((prev) => !prev)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileNavOpen}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <nav className={`nav-links ${mobileNavOpen ? 'is-open' : ''}`}>
+            <a href="#timer" className="nav-link" onClick={() => setMobileNavOpen(false)}>Live Timer</a>
+            <a href="#milestones" className="nav-link" onClick={() => setMobileNavOpen(false)}>Milestones</a>
+            <a href="#gallery" className="nav-link" onClick={() => setMobileNavOpen(false)}>Scrapbook</a>
+            <a href="#letter" className="nav-link" onClick={() => setMobileNavOpen(false)}>Letter</a>
+            <a href="#about" className="nav-link" onClick={() => setMobileNavOpen(false)}>About You</a>
+            <a href="#favorites" className="nav-link" onClick={() => setMobileNavOpen(false)}>Favorites</a>
+            <a href="#food" className="nav-link" onClick={() => setMobileNavOpen(false)}>Comfort Food</a>
           </nav>
+
           <button className="celebrate-btn" onClick={triggerConfetti}>
             ✨ Celebrate!
           </button>

@@ -23,7 +23,9 @@ function StackCard({ card, index, total, container, reduceMotion }) {
         style={{
           scale,
           rotate: reduceMotion ? 0 : TILT_PATTERN[index % TILT_PATTERN.length],
-          top: `calc(-5vh + ${160 + index * 22}px)`,
+          // Small symmetric cascade around dead-center, instead of a large
+          // downward offset — keeps the resting stack vertically centered.
+          top: `${(index - (total - 1) / 2) * 14}px`,
         }}
       >
         <div className="stack-card-photo-wrap">
