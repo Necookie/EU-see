@@ -1,71 +1,66 @@
 import React, { useState, useEffect, useRef } from 'react'
 import photosData from './photosData.json'
 
-const timelineMoments = [
+const milestoneMoments = [
   {
-    badge: 'Chapter 1 · April 2026',
-    title: 'Where Our Story Began Blooming',
+    date: 'May 15, 2026',
+    badge: 'Our Anniversary 💕',
+    title: 'The Day It All Began',
     description:
-      'From the very first conversations, late-night Discord calls, and sharing our favorite things. The connection was effortless and sweet from day one.',
+      'The start of our relationship and the day we officially became us.',
     photo: '/photos/bebi-journey-03.jpg',
-    caption: 'The beginning of something beautiful 🌸',
+    caption: 'May 15, 2026 · Where our story started',
   },
   {
-    badge: 'Chapter 2 · May & June 2026',
-    title: 'Daily Warmth, Late Nights & Endless Laughs',
+    date: 'July 25, 2026',
+    badge: 'Makati Date 🏙️',
+    title: 'Our Day in Makati',
     description:
-      'Talking about anime, manga, food cravings, and life until 2 AM. Every simple moment felt special and naturally comforting.',
-    photo: '/photos/bebi-journey-04.jpg',
-    caption: 'Cozy late nights & endless laughter 💬',
-  },
-  {
-    badge: 'Chapter 3 · July 25, 2026',
-    title: 'The Unforgettable Makati Date',
-    description:
-      'Walking hand-in-hand through Makati, cafe hopping, enjoying delicious food, candid photos, and watching the city golden hour together.',
+      'Spending the day together in Makati—walking around, good food, cafe stops, and taking photos together during golden hour.',
     photo: '/photos/makati-golden-01.jpg',
-    caption: 'Makati golden hour magic ✨',
+    caption: 'July 25, 2026 · Makati golden hour with you',
   },
   {
-    badge: 'Chapter 4 · August 2026 & Beyond',
-    title: '3 Months Down, Forever to Go',
+    date: 'August 15, 2026',
+    badge: '3rd Monthsary 🥂',
+    title: 'Three Months of Us',
     description:
-      'Happy 3rd Monthsary, my love! Thank you for 90+ days of happiness, genuine care, and being the sweetest part of my life.',
+      'Celebrating our 3rd monthsary! Three months down and excited for more memories to come.',
     photo: '/photos/makati-memory-10.jpg',
-    caption: 'To many more months and milestones ahead 🥂',
+    caption: 'August 15, 2026 · Happy 3rd Monthsary!',
   },
 ]
 
-const reasonsILoveYou = [
+const personalityHighlights = [
   {
     icon: '🌸',
-    title: 'Your Soft Blue Lily Energy',
-    text: 'Calm, gentle, and breathtakingly unique. Just like your favorite blue lily, your presence brings peace and beauty wherever you are.',
+    title: 'Blue Lily Energy',
+    text: 'Calm, soft, and naturally striking without being loud. It matches your vibe completely.',
   },
   {
     icon: '🎨',
-    title: 'Effortlessly Cute & Creative',
-    text: 'From your artisan craft hobbies to your taste in aesthetics, everything you make and love has that special, personal touch.',
+    title: 'Cute & Creative',
+    text: 'Your artisan crafts, aesthetic eye, and natural creativity that makes small things thoughtful and fun.',
+  },
+  {
+    icon: '📚',
+    title: 'Manga & Late Night Movies',
+    text: 'Enjoying good stories, cozy late nights, and just sharing whatever we are into.',
   },
   {
     icon: '✨',
-    title: 'Your Radiant & Sweet Smile',
-    text: 'Your warm smile and gentle eyes make even the most ordinary day feel bright, cheerful, and full of comfort.',
-  },
-  {
-    icon: '🌙',
-    title: 'Late Night Talks & Shared Vibe',
-    text: 'Whether we are discussing movies, manga, memes, or random thoughts, there is never a dull second with you.',
+    title: 'Easy to Be Around',
+    text: 'Warm, cozy, and genuine company. Nothing forced—just sweet and comfortable.',
   },
   {
     icon: '🍕',
-    title: 'Top-Tier Foodie Companion',
-    text: 'Sharing food cravings, planning our next snack runs, and eating comfort meals together is one of our best superpowers.',
+    title: 'Elite Food Taste',
+    text: 'From Latiao and Buldak to sushi, fries, and pizza—our food cravings always hit the spot.',
   },
   {
     icon: '💙',
-    title: 'My Safe & Warm Space',
-    text: 'Being with you is easy and honest. You make me feel loved, appreciated, and inspired every single day.',
+    title: 'Sweet in the Details',
+    text: 'The little things stand out with you—your hobbies, your style, and your gentle charm.',
   },
 ]
 
@@ -73,13 +68,13 @@ const comfortFoods = [
   { name: 'Latiao', emoji: '🌶️' },
   { name: 'French Fries', emoji: '🍟' },
   { name: 'Hawaiian Pizza', emoji: '🍕' },
+  { name: 'Vegetarian Pizza', emoji: '🧀' },
   { name: 'Sushi', emoji: '🍣' },
   { name: 'Kimbap', emoji: '🍱' },
-  { name: 'Buldak Noodles', emoji: '🍜' },
-  { name: 'Pasta & Carbonara', emoji: '🍝' },
-  { name: 'Pork Sisig', emoji: '🍳' },
-  { name: 'Crispy Chicken Burgers', emoji: '🍔' },
-  { name: 'Sweet Desserts', emoji: '🍰' },
+  { name: 'Buldak', emoji: '🍜' },
+  { name: 'Pasta', emoji: '🍝' },
+  { name: 'Sisig', emoji: '🍳' },
+  { name: 'Chicken Burgers', emoji: '🍔' },
 ]
 
 export default function App() {
@@ -93,6 +88,37 @@ export default function App() {
   const audioContextRef = useRef(null)
   const oscillatorRef = useRef(null)
 
+  // Live Timer: Exact live counting from May 15, 2026 00:00:00
+  const [liveTimer, setLiveTimer] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  })
+
+  useEffect(() => {
+    const anniversaryDate = new Date('2026-05-15T00:00:00')
+
+    const calculateTime = () => {
+      const now = new Date()
+      const diffMs = now.getTime() - anniversaryDate.getTime()
+      if (diffMs > 0) {
+        const totalSeconds = Math.floor(diffMs / 1000)
+        const days = Math.floor(totalSeconds / (3600 * 24))
+        const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600)
+        const minutes = Math.floor((totalSeconds % 3600) / 60)
+        const seconds = Math.floor(totalSeconds % 60)
+        setLiveTimer({ days, hours, minutes, seconds })
+      } else {
+        setLiveTimer({ days: 92, hours: 0, minutes: 0, seconds: 0 })
+      }
+    }
+
+    calculateTime()
+    const interval = setInterval(calculateTime, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   // Filtered photos
   const filteredPhotos = photosData.filter((photo) => {
     if (activeFilter === 'all') return true
@@ -104,62 +130,28 @@ export default function App() {
     return true
   })
 
-  // Monthsary countdown / counter calculation
-  const [timeTogether, setTimeTogether] = useState({
-    months: 3,
-    days: 92,
-    hours: 14,
-    minutes: 30,
-  })
-
-  useEffect(() => {
-    // Start date approx 3 months ago (mid May 2026)
-    const startDate = new Date('2026-05-14T00:00:00')
-    const updateTimer = () => {
-      const now = new Date()
-      const diffMs = now - startDate
-      const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-      const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24)
-      const minutes = Math.floor((diffMs / (1000 * 60)) % 60)
-      setTimeTogether({
-        months: 3,
-        days: totalDays > 0 ? totalDays : 92,
-        hours,
-        minutes,
-      })
-    }
-    updateTimer()
-    const timer = setInterval(updateTimer, 30000)
-    return () => clearInterval(timer)
-  }, [])
-
-  // Floating petals generator
-  const petals = Array.from({ length: 18 }).map((_, i) => ({
+  // Floating petals
+  const petals = Array.from({ length: 16 }).map((_, i) => ({
     id: i,
-    left: `${(i * 5.8) % 100}%`,
-    delay: `${(i * 1.4) % 12}s`,
-    duration: `${14 + ((i * 3) % 10)}s`,
+    left: `${(i * 6.2) % 100}%`,
+    delay: `${(i * 1.5) % 10}s`,
+    duration: `${14 + ((i * 3) % 8)}s`,
     symbol: i % 3 === 0 ? '🌸' : i % 3 === 1 ? '💙' : '✨',
   }))
 
-  // Trigger romantic celebration confetti
+  // Confetti trigger
   const triggerConfetti = () => {
-    const newParticles = Array.from({ length: 45 }).map((_, i) => ({
+    const newParticles = Array.from({ length: 40 }).map((_, i) => ({
       id: Date.now() + i,
       x: 20 + Math.random() * 60,
       y: 30 + Math.random() * 40,
-      color: ['#5474c4', '#f08a9d', '#ffd166', '#a0c4ff', '#ff99c8'][
-        Math.floor(Math.random() * 5)
-      ],
-      emoji: ['💙', '🌸', '✨', '💖', '🎉', '🦋'][Math.floor(Math.random() * 6)],
-      speedX: (Math.random() - 0.5) * 12,
-      speedY: -Math.random() * 10 - 5,
+      emoji: ['💙', '🌸', '✨', '💖', '🎉'][Math.floor(Math.random() * 5)],
     }))
     setConfettiBurst(newParticles)
-    setTimeout(() => setConfettiBurst([]), 3500)
+    setTimeout(() => setConfettiBurst([]), 3000)
   }
 
-  // Handle Photo like counter
+  // Like reaction
   const handleLike = (src, e) => {
     e.stopPropagation()
     setLikes((prev) => ({
@@ -168,7 +160,7 @@ export default function App() {
     }))
   }
 
-  // Web Audio romantic ambient chime toggle
+  // Music toggle using gentle Web Audio sine chords
   const toggleMusic = () => {
     if (isPlayingMusic) {
       if (oscillatorRef.current) {
@@ -187,11 +179,10 @@ export default function App() {
         if (ctx.state === 'suspended') {
           ctx.resume()
         }
-        
-        // Gentle romantic arpeggio synth notes
-        const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23] // C, E, G, C, A, F
+
+        const notes = [261.63, 329.63, 392.0, 523.25, 440.0, 349.23]
         let noteIdx = 0
-        
+
         const playArp = () => {
           if (!isPlayingMusic && oscillatorRef.current === null) return
           const osc = ctx.createOscillator()
@@ -199,19 +190,19 @@ export default function App() {
           osc.type = 'sine'
           osc.frequency.setValueAtTime(notes[noteIdx % notes.length], ctx.currentTime)
           noteIdx++
-          
+
           gain.gain.setValueAtTime(0.001, ctx.currentTime)
-          gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.1)
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.6)
-          
+          gain.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime + 0.1)
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.5)
+
           osc.connect(gain)
           gain.connect(ctx.destination)
           osc.start()
-          osc.stop(ctx.currentTime + 1.8)
+          osc.stop(ctx.currentTime + 1.6)
         }
-        
+
         playArp()
-        const intervalId = setInterval(playArp, 1200)
+        const intervalId = setInterval(playArp, 1300)
         oscillatorRef.current = { stop: () => clearInterval(intervalId) }
         setIsPlayingMusic(true)
       } catch (err) {
@@ -240,10 +231,10 @@ export default function App() {
 
   return (
     <div className="page-shell">
-      {/* Paper texture overlay */}
+      {/* Paper overlay */}
       <div className="paper-overlay" />
 
-      {/* Floating Petals / Hearts */}
+      {/* Floating Petals */}
       <div className="ambient-petals">
         {petals.map((p) => (
           <div
@@ -260,7 +251,7 @@ export default function App() {
         ))}
       </div>
 
-      {/* Confetti Explosion elements */}
+      {/* Confetti Explosion */}
       {confettiBurst.length > 0 && (
         <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 1000 }}>
           {confettiBurst.map((c) => (
@@ -288,10 +279,11 @@ export default function App() {
             🌸 Eulyn & Dheyn <span>3rd Monthsary</span>
           </div>
           <nav className="nav-links">
-            <a href="#story" className="nav-link">Our Story</a>
+            <a href="#timer" className="nav-link">Live Timer</a>
+            <a href="#milestones" className="nav-link">Milestones</a>
             <a href="#gallery" className="nav-link">Scrapbook</a>
-            <a href="#letter" className="nav-link">Love Letter</a>
-            <a href="#reasons" className="nav-link">Why You</a>
+            <a href="#letter" className="nav-link">Letter</a>
+            <a href="#about" className="nav-link">About You</a>
             <a href="#food" className="nav-link">Comfort Food</a>
           </nav>
           <button className="celebrate-btn" onClick={triggerConfetti}>
@@ -300,50 +292,52 @@ export default function App() {
         </header>
 
         {/* HERO SECTION */}
-        <section className="hero-section">
+        <section className="hero-section" id="timer">
           <div className="hero-content">
             <div className="hero-badge">
-              <span>✨</span> Happy 3rd Monthsary, Bebi! <span>💙</span>
+              <span>✨</span> Anniversary: May 15, 2026 <span>💙</span>
             </div>
             <h1 className="hero-title">
-              Three Months of <span className="highlight">Endless Smiles</span>
-              <span className="hand-subtitle">and loving you more each day</span>
+              Happy <span className="highlight">3rd Monthsary</span>,
+              <span className="hand-subtitle">Eulyn</span>
             </h1>
             <p className="hero-description">
-              Welcome to our little digital scrapbook, Eulyn. A warm, creative corner celebrating our first 3 months together—from our sweet late-night chats to our unforgettable Makati date and all the beautiful memories in between.
+              A little digital scrapbook for you, celebrating 3 months together. From our anniversary on May 15 to our Makati date on July 25 and all the sweet moments along the way.
             </p>
 
-            {/* Live Counter Box */}
+            {/* Live Ticking Anniversary Counter */}
             <div className="counter-box">
               <div className="counter-item">
-                <span className="counter-num">{timeTogether.months}</span>
-                <span className="counter-label">Months</span>
+                <span className="counter-num">{liveTimer.days}</span>
+                <span className="counter-label">Days</span>
               </div>
               <div className="counter-item">
-                <span className="counter-num">{timeTogether.days}</span>
-                <span className="counter-label">Days of Us</span>
+                <span className="counter-num">{liveTimer.hours}</span>
+                <span className="counter-label">Hours</span>
               </div>
               <div className="counter-item">
-                <span className="counter-num">1</span>
-                <span className="counter-label">Amazing Girl</span>
+                <span className="counter-num">{liveTimer.minutes}</span>
+                <span className="counter-label">Minutes</span>
               </div>
               <div className="counter-item">
-                <span className="counter-num">∞</span>
-                <span className="counter-label">Love & Care</span>
+                <span className="counter-num" style={{ color: 'var(--blush-rose)' }}>
+                  {liveTimer.seconds}
+                </span>
+                <span className="counter-label">Seconds</span>
               </div>
             </div>
 
             <div className="hero-cta-group">
               <a href="#letter" className="btn-primary">
-                💌 Open Monthsary Letter
+                💌 Read the Note
               </a>
               <a href="#gallery" className="btn-secondary">
-                📸 Explore Scrapbook ({photosData.length} Photos)
+                📸 View Scrapbook ({photosData.length} Photos)
               </a>
             </div>
           </div>
 
-          {/* Interactive Hero Scrapbook Showcase */}
+          {/* Hero Polaroids */}
           <div className="hero-scrapbook-showcase">
             <div
               className="scrapbook-polaroid hero-pol-1"
@@ -354,7 +348,7 @@ export default function App() {
             >
               <div className="washi-tape" />
               <img src="/photos/makati-golden-01.jpg" alt="Makati Date" />
-              <p className="polaroid-caption">Golden Hour with You 🌇</p>
+              <p className="polaroid-caption">Makati Date · July 25 🌇</p>
             </div>
 
             <div
@@ -366,7 +360,7 @@ export default function App() {
             >
               <div className="washi-tape" />
               <img src="/photos/bebi-sweet-07.jpg" alt="Sweet Smile" />
-              <p className="polaroid-caption">Blue Lily Beauty 🌸</p>
+              <p className="polaroid-caption">Blue Lily Kind of Pretty 🌸</p>
             </div>
 
             <div
@@ -378,24 +372,24 @@ export default function App() {
             >
               <div className="washi-tape" />
               <img src="/photos/makati-portrait-09.jpg" alt="Sweet Moment" />
-              <p className="polaroid-caption">Sweetest Moments 💕</p>
+              <p className="polaroid-caption">Makati Memories 💕</p>
             </div>
           </div>
         </section>
 
-        {/* TIMELINE / CHAPTERS SECTION */}
-        <section className="section" id="story">
+        {/* MILESTONES SECTION */}
+        <section className="section" id="milestones">
           <div className="section-head">
-            <span className="section-tag">Our 3-Month Journey</span>
-            <h2 className="section-title">Chapters of Us</h2>
+            <span className="section-tag">Key Milestones</span>
+            <h2 className="section-title">Moments of Us</h2>
             <p className="section-sub">
-              A look back at how every single month brought us closer, sweeter, and happier together.
+              Important dates and favorite memories since we started dating.
             </p>
           </div>
 
           <div className="timeline-container">
             <div className="timeline-line" />
-            {timelineMoments.map((item, idx) => (
+            {milestoneMoments.map((item, idx) => (
               <div
                 key={item.badge}
                 className={`timeline-card ${idx % 2 === 0 ? 'left' : 'right'}`}
@@ -403,6 +397,9 @@ export default function App() {
                 <div className="timeline-marker" />
                 <span className="timeline-badge">{item.badge}</span>
                 <h3>{item.title}</h3>
+                <p style={{ fontWeight: 600, color: 'var(--blue-lily-deep)', marginBottom: '6px' }}>
+                  {item.date}
+                </p>
                 <p>{item.description}</p>
                 <div
                   className="timeline-img-wrap"
@@ -421,22 +418,22 @@ export default function App() {
         {/* SCRAPBOOK PHOTO GALLERY */}
         <section className="section gallery-section" id="gallery">
           <div className="section-head">
-            <span className="section-tag">Polaroid Memory Wall</span>
+            <span className="section-tag">Photo Collection</span>
             <h2 className="section-title">Our Captured Frames</h2>
             <p className="section-sub">
-              Click on any polaroid to view it in high resolution, leave a heart reaction, or flip through our memories.
+              Photos from our Makati date, milestones, and favorite candid moments. Click any frame to view in full.
             </p>
           </div>
 
           {/* Category Filter Tabs */}
           <div className="filter-tabs">
             {[
-              { key: 'all', label: `✨ All Frames (${photosData.length})` },
-              { key: 'makati', label: '🏙️ Makati Date' },
-              { key: 'journey', label: '🌸 Journey Milestones' },
-              { key: 'sweet', label: '💕 Sweet Eulyn' },
-              { key: 'candid', label: '📸 Candid & Cute' },
-              { key: 'featured', label: '🌟 Favorites' },
+              { key: 'all', label: `✨ All Photos (${photosData.length})` },
+              { key: 'makati', label: '🏙️ Makati Date (July 25)' },
+              { key: 'journey', label: '🌸 Milestones' },
+              { key: 'sweet', label: '💕 Sweet Moments' },
+              { key: 'candid', label: '📸 Candid' },
+              { key: 'featured', label: '🌟 Featured' },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -489,10 +486,10 @@ export default function App() {
         {/* SEALED LOVE LETTER SECTION */}
         <section className="section letter-section" id="letter">
           <div className="section-head">
-            <span className="section-tag">A Special Note</span>
-            <h2 className="section-title">From My Heart to Yours</h2>
+            <span className="section-tag">A Note for You</span>
+            <h2 className="section-title">Happy 3rd Monthsary</h2>
             <p className="section-sub">
-              Click the wax seal below to unseal your 3rd Monthsary letter.
+              Click the wax seal below to open your note.
             </p>
           </div>
 
@@ -508,28 +505,27 @@ export default function App() {
               </div>
               <p className="envelope-hint">
                 {envelopeOpen
-                  ? '✨ The letter is unfolded below ✨'
-                  : '💌 Tap the wax seal to unseal your letter 💌'}
+                  ? '✨ The note is open below ✨'
+                  : '💌 Tap the wax seal to read the note 💌'}
               </p>
             </div>
 
             {envelopeOpen && (
               <div className="letter-content">
-                <h3 className="letter-heading">Dearest Eulyn (Bebi),</h3>
+                <h3 className="letter-heading">Dearest Eulyn,</h3>
                 <div className="letter-body">
                   <p>
-                    Happy 3rd Monthsary! It feels surreal that three months have already passed, but at the same time, every single day with you feels like a blessing I never take for granted.
+                    Happy 3rd Monthsary! It is crazy to think three months have already passed since May 15, 2026.
                   </p>
                   <p>
-                    Thank you for being such a radiant, sweet, and genuine person. Your presence brings so much calm and joy into my life. From our late-night chats talking about anime, crafts, and food, to the moments we just laugh over silly things—every second spent with you is my favorite part of the day.
+                    I appreciate the person you are—creative, naturally sweet, thoughtful, and easy to be around. Whether we are talking about manga, movies, food cravings, or random everyday things, spending time with you is always my favorite part of the day.
                   </p>
                   <p>
-                    Our Makati date was one of the happiest days I have had. Seeing you smile in person, walking around the city, sharing meals, and capturing those sweet candid memories made me realize even more how lucky I am to have you in my corner.
+                    Our Makati date on July 25 was really special to me. Walking around, trying good food, and having you right beside me made for such a memorable day.
                   </p>
                   <p>
-                    You are naturally creative, thoughtful, and pretty in that calm blue lily kind of way. Here is to our 3rd month, and to many more adventures, food dates, and unforgettable memories ahead.
+                    Thank you for three wonderful months, Eulyn. Here is to celebrating today and looking forward to many more months and dates ahead.
                   </p>
-                  <p>I appreciate you, I adore you, and I love you always.</p>
                 </div>
                 <div className="letter-signature">
                   <p className="letter-sign-text">With all my love,</p>
@@ -540,34 +536,34 @@ export default function App() {
           </div>
         </section>
 
-        {/* REASONS I LOVE YOU SECTION */}
-        <section className="section" id="reasons">
+        {/* ABOUT YOU / TRAITS SECTION */}
+        <section className="section" id="about">
           <div className="section-head">
-            <span className="section-tag">Why You Are Special</span>
-            <h2 className="section-title">The Things I Adore About You</h2>
+            <span className="section-tag">A Few Things That Fit You</span>
+            <h2 className="section-title">The Vibe That Feels Like You</h2>
             <p className="section-sub">
-              A few of the countless little reasons why loving you is the easiest thing in the world.
+              Creative hobbies, sweet energy, comfort things, and a style that feels soft and genuine.
             </p>
           </div>
 
           <div className="reasons-grid">
-            {reasonsILoveYou.map((reason) => (
-              <div key={reason.title} className="reason-card">
-                <span className="reason-icon">{reason.icon}</span>
-                <h3>{reason.title}</h3>
-                <p>{reason.text}</p>
+            {personalityHighlights.map((item) => (
+              <div key={item.title} className="reason-card">
+                <span className="reason-icon">{item.icon}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* COMFORT FOOD & CRAVINGS MENU */}
+        {/* COMFORT FOOD SECTION */}
         <section className="section" id="food">
           <div className="section-head">
-            <span className="section-tag">Our Foodie World</span>
-            <h2 className="section-title">The Comfort Menu</h2>
+            <span className="section-tag">Comfort Menu</span>
+            <h2 className="section-title">The Snack & Food Lineup</h2>
             <p className="section-sub">
-              All of Eulyn&apos;s favorite comfort food and snack staples. Tap any item to send a craving!
+              Your favorite comfort foods and snacks. Tap any item to highlight it!
             </p>
           </div>
 
@@ -603,7 +599,7 @@ export default function App() {
         <footer className="footer">
           <p className="footer-hand">Happy 3rd Monthsary, Eulyn 💙</p>
           <p className="footer-text">
-            Handcrafted with love, memories, and code for my favorite person in the world.
+            May 15, 2026 · Handcrafted with care, memories, and code.
           </p>
         </footer>
       </div>
@@ -686,7 +682,7 @@ export default function App() {
       <div
         className="vinyl-widget"
         onClick={toggleMusic}
-        title="Toggle romantic ambient melody"
+        title="Toggle soft ambient melody"
       >
         <div className={`vinyl-disc ${isPlayingMusic ? 'spinning' : ''}`}>
           <div className="vinyl-center-dot" />
