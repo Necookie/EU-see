@@ -8,7 +8,7 @@ const milestoneMoments = [
     badge: 'Our Anniversary 💕',
     title: 'The Day It All Began',
     description: 'The start of us — the day we officially became a thing.',
-    photo: '/photos/bebi-journey-03.jpg',
+    photo: '/photos/bebi-sweet-05.jpg',
     caption: 'May 15, 2026 · Where our story started',
   },
   {
