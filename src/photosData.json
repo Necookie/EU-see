@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "src":  "/photos/makati-golden-01.jpg",
         "target":  "makati-golden-01.jpg",
@@ -33,12 +33,6 @@
         "src":  "/photos/makati-lunch-06.jpg",
         "target":  "makati-lunch-06.jpg",
         "caption":  "Lunch date \u0026 happy tummy",
-        "category":  "makati"
-    },
-    {
-        "src":  "/photos/makati-laugh-07.jpg",
-        "target":  "makati-laugh-07.jpg",
-        "caption":  "The way you laugh makes my day",
         "category":  "makati"
     },
     {

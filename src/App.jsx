@@ -31,7 +31,7 @@ const timelineMoments = [
     title: '3 Months Down, Forever to Go',
     description:
       'Happy 3rd Monthsary, my love! Thank you for 90+ days of happiness, genuine care, and being the sweetest part of my life.',
-    photo: '/photos/makati-laugh-07.jpg',
+    photo: '/photos/makati-memory-10.jpg',
     caption: 'To many more months and milestones ahead 🥂',
   },
 ]
@@ -49,8 +49,8 @@ const reasonsILoveYou = [
   },
   {
     icon: '✨',
-    title: 'The Way You Smile and Laugh',
-    text: 'Your candid laugh and sweet eyes make even the most ordinary day feel bright, cheerful, and full of warmth.',
+    title: 'Your Radiant & Sweet Smile',
+    text: 'Your warm smile and gentle eyes make even the most ordinary day feel bright, cheerful, and full of comfort.',
   },
   {
     icon: '🌙',
@@ -372,13 +372,13 @@ export default function App() {
             <div
               className="scrapbook-polaroid hero-pol-3"
               onClick={() => {
-                const idx = photosData.findIndex((p) => p.target.includes('makati-laugh-07'))
+                const idx = photosData.findIndex((p) => p.target.includes('makati-portrait-09'))
                 setSelectedPhotoIndex(idx !== -1 ? idx : 2)
               }}
             >
               <div className="washi-tape" />
-              <img src="/photos/makati-laugh-07.jpg" alt="Joyful Moment" />
-              <p className="polaroid-caption">My Favorite Laugh 💕</p>
+              <img src="/photos/makati-portrait-09.jpg" alt="Sweet Moment" />
+              <p className="polaroid-caption">Sweetest Moments 💕</p>
             </div>
           </div>
         </section>
