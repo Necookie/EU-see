@@ -90,12 +90,6 @@
         "category": "journey"
     },
     {
-        "src": "/photos/bebi-journey-03.jpg",
-        "target": "bebi-journey-03.jpg",
-        "caption": "Where it started",
-        "category": "journey"
-    },
-    {
         "src": "/photos/bebi-journey-04.jpg",
         "target": "bebi-journey-04.jpg",
         "caption": null,
@@ -116,14 +110,8 @@
     {
         "src": "/photos/bebi-sweet-07.jpg",
         "target": "bebi-sweet-07.jpg",
-        "caption": "Blue lily",
-        "category": "sweet"
-    },
-    {
-        "src": "/photos/bebi-candid-08.jpg",
-        "target": "bebi-candid-08.jpg",
         "caption": null,
-        "category": "candid"
+        "category": "sweet"
     },
     {
         "src": "/photos/bebi-candid-09.jpg",
